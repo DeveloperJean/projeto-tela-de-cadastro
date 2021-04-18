@@ -10,6 +10,12 @@ class Validator {
 // iniciar a validação de todoas os campos
 
 validate(form) {
+
+    //resgata todas as validações
+    let currentValidations = document.querySelectorAll('form.error-validation');
+
+
+
     //pegar os inputs
     let inputs = form.getElementsByTagName('input')
 
@@ -53,7 +59,7 @@ minlength(input, minValue) {
 }
 
 //método para imprimir mensagens de erro na tela
-    printMessage(input,msg) {
+    printMessage(input, msg) {
         
         let template = document.querySelector('.error-validation').cloneNode(true);
 
@@ -65,8 +71,15 @@ minlength(input, minValue) {
 
         inputParent.appendChild(template);
     }
+    
+    //limpa as validações da tela
+    
+    cleanValidations(validations) {
+    
+    }
 
 }
+
 
 let form = document.getElementById("register-form");
 let submit = document.getElementById("btn-submit");

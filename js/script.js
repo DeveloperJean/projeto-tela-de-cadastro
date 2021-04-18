@@ -2,83 +2,146 @@ class Validator {
 
     constructor() {
         this.validations = [
+            'data-required',
             'data-min-length',
+            'data-max-lengtg',
+            'data-email-validate',
         ]
     }
 
 
-// iniciar a validação de todoas os campos
+// iniciar a validação de todas os campos
 
 validate(form) {
 
-    //resgata todas as validações
-    let currentValidations = document.querySelectorAll('form.error-validation');
+    // resgata todas as validações
+
+    let currentValidations = document.querySelectorAll('form .error-validation');
+    
+    if(currentValidations.length > 0) {
+        this.cleanValidations(currentValidations);
+    }
 
 
+    // pegar os inputs
 
-    //pegar os inputs
-    let inputs = form.getElementsByTagName('input')
+    let inputs = form.getElementsByTagName('input');
 
-    //transformo uma HTMLCollection -> array
+    // transformo uma HTMLCollection -> array
+
     let inputsArray = [...inputs];
 
-    //loop nos inputs e validação mediante ao que for encontrado
+    // loop nos inputs e validação mediante ao que for encontrado
+
     inputsArray.forEach(function(input) {
 
-        //loop em todas as validações
+        // loop em todas as validações
+
         for(let i = 0; this.validations.length > i; i++) {
-            //verifica se a validação atual existe no input
+
+            // verifica se a validação atual existe no input
+
             if(input.getAttribute(this.validations[i]) !=null) {
                 
-                //data-min-length -> minlength
-                //limpando a string para virar um método
+                // data-min-length -> minlength
+
+                // limpando a string para virar um método
+
                 let method = this.validations[i].replace('data-', '').replace('-','');
 
-                //valir do input
+                // valir do input
+
                 let value = input.getAttribute(this.validations[i]);
 
-                //invocar o método
+                // invocar o método
+
                 this[method](input, value);
             }
         }
 
     },this);
-    }
-}
 
-//verifica se um input tem um número mínimo de caracteres
-minlength(input, minValue) {
-    let inputLength = input.value.length;
-
-    let errorMessage = `O campo precisa ter pelo menos ${minValue} caracteres`;
-
-    if(inputLength < minValue) {
-        this.printMessage(input, errorMessage);
-    }
-
-}
-
-//método para imprimir mensagens de erro na tela
-    printMessage(input, msg) {
+    // verifica se um input tem um número mínimo de caracteres.
+    
+    minlength(input, minValue) {
+        let inputLength = input.value.length;
+    
+        let errorMessage = `O campo precisa ter pelo menos ${minValue} caracteres`;
+    
+        if(inputLength < minValue) {
+            this.printMessage(input, errorMessage);
+        }
+    
+        // Verifica se em input passou do limite de caracteres.
         
-        let template = document.querySelector('.error-validation').cloneNode(true);
-
-        template.textContent = msg;
-
-        let inputParent = input.parentNode;
-
-        template.classList.remove('template');
-
-        inputParent.appendChild(template);
-    }
+        maxlength(input, maxValue) {
+            let inputLength = input.value.length;
+        
+            let errorMessage = `O campo precisa ter menos que ${maxValue} caracteres`;
     
-    //limpa as validações da tela
-    
-    cleanValidations(validations) {
-    
-    }
-
+            if(inputLength > maxValue) {
+                this.printMessage(input, errorMessage);
+        }
 }
+
+    //valida emails
+
+    emailValidate(input) {
+        let re = /\S+@\S+\.S+/;
+
+        let email = input.value;
+
+        let errorMassage = `Insita um e-mail no padrão jean@email.com`;
+        if(!re.test(email)) {
+            this,printMessage(input,errorMessage);
+        }
+
+    }
+        
+        // método para imprimir mensagens de erro na tela
+        
+            printMessage(input, msg) {
+
+                // quantidade de erros
+                
+                let errorsQty = input.parentNode.querySelector('.error-validation');
+                
+                if(errorsQty === null) {
+                    let template = document.querySelector('.error-validation').cloneNode(true);
+        
+                template.textContent = msg;
+        
+                let inputParent = input.parentNode;
+        
+                template.classList.remove('template');
+        
+                inputParent.appendChild(template);
+
+                }
+            }
+            
+            // verifica se o input é requirido
+
+            required(input) {
+                let inputValue = input.value;
+
+                if(inputValue == '') {
+                    let errorMessage = `Este campo é obrigatório`;
+
+                    this.printMessage(input, errorMessage);
+                }
+            }
+
+            // limpa as validações da tela
+            
+            cleanValidations(validations) {
+                validations.forEach(el => el.remove());    
+            }
+    }
+}
+
+
+
 
 
 let form = document.getElementById("register-form");
@@ -87,10 +150,11 @@ let submit = document.getElementById("btn-submit");
 let = validator = new Validator();
 
 // evento que dispara as validações
+
 submit.addEventListener('click', function(e){
     
     e.preventDefault();
 
-    console.log('funcionou')
+    console.log('funcionou');
 
 });

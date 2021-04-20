@@ -13,57 +13,47 @@ class Validator {
         ]
     }
 
-
-    // iniciar a validação de todas os campos
-
+    // inicia a validação de todos os campos
     validate(form) {
 
-    // resgata todas as validações
-
+    // limpa todas as validações antigas
     let currentValidations = document.querySelectorAll('form .error-validation');
     
     if(currentValidations.length) {
         this.cleanValidations(currentValidations);
     }
 
-
-    // pegar os inputs
-
+    // pegar todos inputs
     let inputs = form.getElementsByTagName('input');
-
-    // transformo uma HTMLCollection -> array
-
+    // transformar HTMLCollection em arr
     let inputsArray = [...inputs];
 
-    // loop nos inputs e validação mediante ao que for encontrado
-
+    // loop nos inputs e validação mediante aos atributos encontrados
     inputsArray.forEach(function(input, obj) {
 
         // fazer validação de acordo com o atributo do input
         for(let i = 0; this.validations.length > i; i++) {       
-            if(input.getAttribute(this.validations[i]) !=null) {                
-                
-                // limpando a string para saber o método
+            if(input.getAttribute(this.validations[i]) != null) {
 
-                let method = this.validations[i].replace('data-', '').replace('-','');
+                // limpa string para saber o método
+                let method = this.validations[i].replace("data-", "").replace("-", "");
 
-                // valir do input
+                // valor do input
+                let value = input.getAttribute(this.validations[i])
 
-                let value = input.getAttribute(this.validations[i]);
+                // invoca o método
+                this[method](input,value);
 
-                // invocar o método
-
-                this[method](input, value);
-             }
+                              }
             }
 
         }, this);
 
     }
 
-    // método para validar se tem um mínimo de caracteres
-    
+    // método para validar se tem um mínimo de caracteres    
     minlength(input, minValue) {
+        
         let inputLength = input.value.length;
     
         let errorMessage = `O campo precisa ter pelo menos ${minValue} caracteres`;
@@ -71,11 +61,12 @@ class Validator {
         if(inputLength < minValue) {
             this.printMessage(input, errorMessage);
         }
+
     }
     
-        // método para validar se passou do máximo de caracteres
-        
+        // método para validar se passou do máximo de caracteres               
         maxlength(input, maxValue) {
+
             let inputLength = input.value.length;
         
             let errorMessage = `O campo precisa ter menos que ${maxValue} caracteres`;
@@ -83,65 +74,67 @@ class Validator {
             if(inputLength > maxValue) {
                 this.printMessage(input, errorMessage);
         }
+
     }
     
     // método para validar strings que só contem letras
-
     onlyletters(input) {
-        let re = /^[A-Za-z]+$/;
+
+        let re = /^[A-Za-z]+$/;;
         
         let inputValue = input.value;
 
-        let errorMassage = `Este campo não aceita números nem caracteres especiais`;
+        let errorMessage = `Este campo não aceita números nem caracteres especiais`;
 
         if(!re.test(inputValue)) {
             this.printMessage(input, errorMessage);
         }
+    
     }
     
     //método para valida e-mail
-    
-    emailValidate(input) {
-        let re = /\S+@\S+\.S+/;
+    emailvalidate(input) {
+        let re = /\S+@\S+\.\S+/;
         
         let email = input.value;
         
-        let errorMassage = `Insita um e-mail no padrão jean@email.com`;
+        let errorMessage = `Insira um e-mail no padrão jean@email.com`;
+        
         if(!re.test(email)) {
-            this,printMessage(input, errorMessage);
+            this.printMessage(input, errorMessage);
         }
         
     }
     
         //verifica se dois campos são iguais
         equal(input, inputName) {
-        let inputToCompare = document.getElementsByName(inputName)[0];
+
+    let inputToCompare = document.getElementsByName(inputName)[0];
         
         let errorMessage = `Este campo precisa estar igual ao ${inputName}`;
         
-        if(input.value !=inputToCompare.value) {
+        if(input.value != inputToCompare.value) {
             this.printMessage(input, errorMessage);
-        }
-        
+        }        
     }
     
     // método para exibir inputs que são necessários
-
     required(input) {
+        
         let inputValue = input.value;
 
         if(inputValue === '') {
             let errorMessage = `Este campo é obrigatório`;
             
-            this.printMessage(input,errorMessage);
+            this.printMessage(input, errorMessage);
         }
+
     }
     
     // validando o campo de senha
     passwordvalidate(input) {
 
-        // explodir string em um array
-
+        // explodir string em array
         let charArr = input.value.split("");
 
         let uppercases = 0;
@@ -151,19 +144,19 @@ class Validator {
             if(charArr[i] === charArr[i].toUpperCase() && isNaN(parseInt(charArr[i]))) {
                 uppercases++;                        
             } else if(!isNaN(parseInt(charArr[i]))) {
-                numberss++;
+                numbers++;
             }
         }
 
         if(uppercases === 0 || numbers === 0) {
-            let errorMessage = `A senha precisa de um caractere maiúsculo e um número`;
+            let errorMessage = `A senha precisa um caractere maiúsculo e um número`;
 
             this.printMessage(input, errorMessage);
-            
+          }
+
         }
                 
-        // método para imprimir mensagens de erro 
-        
+        // método para imprimir mensagens de erro         
             printMessage(input, msg) {
 
                 // checa os erros presentes no input                 
@@ -180,8 +173,8 @@ class Validator {
                 template.classList.remove('template');
         
                 inputParent.appendChild(template);
-
                 }
+
             }
             
             // remove todas as validações para fazer a checagem novamente
@@ -202,3 +195,4 @@ submit.addEventListener('click', function(e) {
 
     validator.validate(form);
 });
+

@@ -2,20 +2,20 @@ class Validator {
 
     constructor() {
         this.validations = [
-            'data-required',
             'data-min-length',
             'data-max-length',
-            'data-email-validate',
             'data-only-letters',
+            'data-email-validate',
+            'data-required',            
             'data-equal',
             'data-password-validate',
         ]
     }
 
 
-// iniciar a validação de todas os campos
+    // iniciar a validação de todas os campos
 
-validate(form) {
+    validate(form) {
 
     // resgata todas as validações
 

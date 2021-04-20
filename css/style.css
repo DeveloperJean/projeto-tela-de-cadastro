@@ -9,11 +9,8 @@
 
 input, label {
     display: block;
-    width: 100%;
-}
-
-input:focus, label:focus {
     outline: none;
+    width: 100%;
 }
 
 a {
@@ -28,7 +25,6 @@ body {
 }
 
 /* form */
-
 #main-container {
     width: 500px;
     margin-left: auto;
@@ -93,7 +89,7 @@ input[type="submit"] {
     margin-right: 5px;
 }
 
-#agreement,#agreement-label {
+#agreement, #agreement-label {
     display: inline-block;
     width: auto;
 }
@@ -103,7 +99,7 @@ input[type="submit"] {
     color: #ff1a1a;
     position: absolute;
     top: 57px;
-    font-size: .8rem;
+    font-size: 12px;
 }
 
 .template {

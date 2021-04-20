@@ -130,10 +130,10 @@ class Validator {
     required(input) {
         let inputValue = input.value;
 
-        if(inputValue == '') {
+        if(inputValue === '') {
             let errorMessage = `Este campo é obrigatório`;
             
-            this.printMessage(input, errorMessage);
+            this.printMessage(input,errorMessage);
         }
     }
     

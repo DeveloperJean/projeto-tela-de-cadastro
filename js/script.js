@@ -1,3 +1,4 @@
+//meu
 class Validator {
 
     constructor() {
@@ -107,7 +108,7 @@ class Validator {
         
         let errorMassage = `Insita um e-mail no padrão jean@email.com`;
         if(!re.test(email)) {
-            this,printMessage(input,errorMessage);
+            this,printMessage(input, errorMessage);
         }
         
     }
